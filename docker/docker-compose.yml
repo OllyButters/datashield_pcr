@@ -12,6 +12,14 @@ services:
     environment:
       - JAVA_OPTS=-Xms1G -Xmx8G -XX:+UseG1GC
       - OPAL_ADMINISTRATOR_PASSWORD=password
+      - OPAL_DEMO_USER_NAME=demo_user
+      - OPAL_DEMO_USER_PASSWORD=demo_password
+      - OPAL_DEMO_PROJECT=DEMO
+      - OPAL_DEMO_TABLE=CNSIM1
+      - OPAL_DEMO_SOURCE_DATA_URL=https://raw.githubusercontent.com/OllyButters/ds_data/main/CNSIM/CNSIM1.csv
+      - OPAL_COHORT_PROJECT=COHORT
+      - OPAL_COHORT_TABLE=conditions1
+      - OPAL_COHORT_SOURCE_DATA_URL=https://raw.githubusercontent.com/OllyButters/ds_data/main/synthea/conditionsa.csv
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
       - MYSQLDATA_HOST=mysqldata
@@ -22,6 +30,9 @@ services:
       - CSRF_ALLOWED=datashield2.liv.ac.uk:8880,datashield2.liv.ac.uk:80,datashield2.liv.ac.uk,datashield2.liv.ac.uk:8843,datshield2.liv.ac.uk:443
     volumes:
       - /opal:/srv
+      - ./customise.sh:/customise.sh
+    post_start:
+      - command: bash -c "/customise.sh"
   mongo:
     image: mongo:6.0
   mysqldata:
