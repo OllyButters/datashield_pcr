@@ -31,6 +31,12 @@ If using Uncomplicated Firewall (UFW) on the host machine, you will need to allo
     sudo ufw app list
     sudo ufw allow 'Nginx HTTPS'
 
+## Client testing
+
+Once everything is up and running server side the next test to see if you can connect to the server from the client side. There is an example script in the `client` folder which can be run from the client side. This will connect to the server and run a simple test. You will need to install the `dsBaseClient` package. This can be done with the following command:
+
+    install.packages("dsBaseClient", repos = "https://cran.obiba.org")
+
 ## Docker commands
 
 When developing, it is useful to be able to delete everything and start over.
