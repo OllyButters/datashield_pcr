@@ -2,6 +2,18 @@
 
 DataSHIELD for the prostate cancer research project
 
+## Prerequisites
+
+### Docker
+
+We need docker-ce, docker-ce-cli, docker-compose-plugin, plus their prerequisites.
+
+Follow the instructions here: https://docs.docker.com/engine/install/ubuntu/ to add the apt install.
+
+You can verify docker is set up by running:
+
+    sudo docker run hello-world
+
 ## DataSHIELD install
 
 It's all done via the docker compose file, so just run `sudo docker compose up` from within the folder with the `docker-compose.yml` file in and you should be good to go. You might want to edit a couple of things first though:
@@ -16,6 +28,9 @@ This will get you to the point where it is all running locally, you will be able
 <https://localhost:8843>
 
 ## Reverse proxy
+
+## nginx
+
 
 If you installed this on a remote host then you will likely need to add a reverse proxy to the front with a valid SSL certificate. For development a self signed certificate is fine. A good guide for this is here:
 

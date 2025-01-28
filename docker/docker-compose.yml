@@ -1,4 +1,3 @@
-version: '3'
 services:
   opal:
     image: obiba/opal:5
@@ -27,9 +26,10 @@ services:
       - MYSQLDATA_USER=opal
       - MYSQLDATA_PASSWORD=password
       - ROCK_HOSTS=rock:8085
-      - CSRF_ALLOWED=datashield2.liv.ac.uk:8880,datashield2.liv.ac.uk:80,datashield2.liv.ac.uk,datashield2.liv.ac.uk:8843,datshield2.liv.ac.uk:443
+      #- CSRF_ALLOWED=datashield2.liv.ac.uk:8880,datashield2.liv.ac.uk:80,datashield2.liv.ac.uk,datashield2.liv.ac.uk:8843,datshield2.liv.ac.uk:443
+      - CSRF_ALLOWED=172.24.128.135:8080,172.24.128.135:8443,172.24.128.135:8880,172.24.128.135:8843,172.24.128.135:8888,172.24.128.135:8883,CSRF_ALLOWED=172.24.128.135:80
     volumes:
-      - /opal:/srv
+      - /datashield/1/opal:/srv
       - ./customise.sh:/customise.sh
     post_start:
       - command: bash -c "/customise.sh"
