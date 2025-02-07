@@ -10,7 +10,9 @@
 # components are installed on, just calling localhost instead of a proper URL.
 ###############################################################################
 
-# This will need to be installed locally
+# This will need to be installed locally. DSI and DSOpal can be installed from
+# the CRAN, but dsBaseClient needs:
+# install.packages('dsBaseClient', repos=c(getOption('repos'), 'https://cran.obiba.org'), dependencies = TRUE)
 library(DSI)
 library(DSOpal)
 library(dsBaseClient)
@@ -24,11 +26,16 @@ library(dsBaseClient)
 
 # This should be a proper URL with https. If you are running this from within
 # VM then it is probably https://localhost:8443
-url <- "https://datashield2.liv.ac.uk"
+#url <- "https://datashield2.liv.ac.uk"
+url <- "https://172.24.128.135"
 
 # As defined in the docker-compose file
 user <- "administrator"
 password <- "password"
+
+user <- "demo_user"
+password <- "Demo_password1!"
+
 
 # When developing with self signed certificates, you may need to set these as
 # strict verification is the default. Do not use in production.
