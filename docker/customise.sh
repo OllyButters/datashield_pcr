@@ -25,8 +25,11 @@ done
 echo "Opal version:"
 opal system --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --version
 
-# Add the NORMAL DEMO_USER as defined in the values.yaml
+# Add the NORMAL DEMO_USER as defined in the docker_compose.yml file
 opal user --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --add --name $OPAL_DEMO_USER_NAME --upassword $OPAL_DEMO_USER_PASSWORD
+
+# Enable this user to be able to run DataSHIELD functions. Does not grant access to any data though.
+opal perm-datashield --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --type USER --subject $OPAL_DEMO_USER_NAME --permission use --add
 
 ###########################################################################
 # CNSIM DEMO DATA
@@ -39,6 +42,7 @@ opal project --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --add 
 cd /tmp
 mkdir opal-config-temp
 cd opal-config-temp
+pwd
 wget $OPAL_DEMO_SOURCE_DATA_URL
 
 opal_fs_path="/home/administrator"
@@ -47,6 +51,12 @@ opal_file_path="$opal_fs_path/`basename $OPAL_DEMO_SOURCE_DATA_URL`"
 opal file --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD -up `basename $OPAL_DEMO_SOURCE_DATA_URL` $opal_fs_path
 
 opal import-csv --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --destination $OPAL_DEMO_PROJECT --path $opal_file_path  --tables $OPAL_DEMO_TABLE --separator , --type Participant --valueType decimal
+
+cd ..
+rm -rf opal-config-temp
+
+# Add permission to demo user to use the demo table, but not be able to see the data in the web interface.
+opal perm-table --user administrator --password password --type USER --project $OPAL_DEMO_PROJECT --subject $OPAL_DEMO_USER_NAME --permission view --add --tables $OPAL_DEMO_TABLE
 
 
 ###########################################################################
@@ -60,6 +70,7 @@ opal project --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --add 
 cd /tmp
 mkdir opal-config-temp
 cd opal-config-temp
+pwd
 wget $OPAL_COHORT_SOURCE_DATA_URL
 
 opal_fs_path="/home/administrator"
@@ -71,5 +82,8 @@ opal import-csv --user administrator --password $OPAL_ADMINISTRATOR_PASSWORD --d
 
 cd ..
 rm -rf opal-config-temp
+
+# Add permission to demo user to use the demo table, but not be able to see the data in the web interface.
+opal perm-table --user administrator --password password --type USER --project $OPAL_COHORT_PROJECT --subject $OPAL_DEMO_USER_NAME --permission view --add --tables $OPAL_COHORT_TABLE
 
 touch /finished_local_customisation.txt
