@@ -30,8 +30,8 @@ library(dsBaseClient)
 url <- "https://172.24.128.135"
 
 # As defined in the docker-compose file
-user <- "administrator"
-password <- "password"
+#user <- "administrator"
+#password <- "password"
 
 user <- "demo_user"
 password <- "Demo_password1!"
@@ -73,34 +73,3 @@ ds.summary(x = 'D$LAB_HDL', datasources = connections)
 ds.mean(x = 'D$LAB_HDL', datasources = connections)
 datashield.errors()
 
-
-########################### 
-# Synthea
-builder <- DSI::newDSLoginBuilder()
-builder$append(server = "server1",
-               url = "https://datashield2.liv.ac.uk",
-               user = "administrator",
-               password = "password",
-               table = "COHORT.conditions1",
-               options = "list(ssl_verifyhost = 0, ssl_verifypeer = 0)")
-
-logindata <- builder$build()
-connections <- datashield.login(logins = logindata, assign = TRUE, symbol = "D")
-
-# Now start doing stuff with the data in the table linked to 'D'
-ds.colnames(x = 'D', datasources = connections)
-ds.dim(x = 'D', datasources = connections)
-
-ds.dataFrameSubset(df.name = "D",
-                   V1.name = "D$CODE",
-                   V2.name = "72892002",
-                   Boolean.operator = "==",
-                   rm.cols = NULL,
-                   keep.NAs = FALSE,
-                   newobj = "subset.all.rows",
-                   datasources = connections, #all servers are used
-                   notify.of.progress = FALSE)                
-
-ds.colnames("subset.all.rows")
-ds.dim("subset.all.rows")
-ds.length("subset.all.rows")
