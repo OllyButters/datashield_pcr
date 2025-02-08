@@ -1,13 +1,12 @@
 services:
   opal:
-    image: obiba/opal:4.7
+    image: obiba/opal:5.0
     ports:
       - "8880:8080"
       - "8843:8443"
     links:
       - rock
-      - mongo
-#      - mysqldata
+      - mongodb
     environment:
       - JAVA_OPTS=-Xms1G -Xmx8G -XX:+UseG1GC
       - OPAL_ADMINISTRATOR_PASSWORD=password
@@ -19,37 +18,20 @@ services:
       - OPAL_COHORT_PROJECT=COHORT
       - OPAL_COHORT_TABLE=conditions1
       - OPAL_COHORT_SOURCE_DATA_URL=https://raw.githubusercontent.com/OllyButters/ds_data/main/synthea/conditionsa.csv
-      - MONGO_HOST=mongo
+      - MONGO_HOST=mongodb
       - MONGO_PORT=27017
-#      - MYSQLDATA_HOST=mysqldata
-#      - MYSQLDATA_DATABASE=opal
-#      - MYSQLDATA_USER=opal
-#      - MYSQLDATA_PASSWORD=password
+      - MONGODATA_DATABASE=mongodb
       - ROCK_HOSTS=rock:8085
-      #- CSRF_ALLOWED=datashield2.liv.ac.uk:8880,datashield2.liv.ac.uk:80,datashield2.liv.ac.uk,datashield2.liv.ac.uk:8843,datshield2.liv.ac.uk:443
-      - CSRF_ALLOWED=172.24.128.135:8080,172.24.128.135:8443,172.24.128.135:8880,172.24.128.135:8843,172.24.128.135:8888,172.24.128.135:8883,172.24.128.135:80
+      #- CSRF_ALLOWED=datashield2.liv.ac.uk:*
+      - CSRF_ALLOWED=172.24.128.135:*
     volumes:
       - /datashield/1/opal:/srv
       - ./customise.sh:/customise.sh
-#    depends_on:
-#      mongo:
-#        condition: service_healthy
+    depends_on: 
+      - mongodb
     post_start:
       - command: bash -c "/customise.sh"
-  mongo:
+  mongodb:
     image: mongo:6.0
-#    healthcheck:
-#      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 3
-#      start_period: 5s
-#  mysqldata:
-#    image: mysql
-#    environment:
-#      - MYSQL_DATABASE=opal
-#      - MYSQL_USER=opal
-#      - MYSQL_PASSWORD=password
-#      - MYSQL_RANDOM_ROOT_PASSWORD=yes
   rock:
     image: datashield/rock-base:latest
